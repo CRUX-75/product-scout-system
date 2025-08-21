@@ -1,0 +1,45 @@
+{
+  "name": "product-scout-system",
+  "version": "1.0.0",
+  "description": "E-commerce Product Scout with HIL Integration - MVP Lean",
+  "main": "index.js",
+  "scripts": {
+    "dev": "docker-compose -f docker-compose.dev.yml up -d",
+    "stop": "docker-compose -f docker-compose.dev.yml down",
+    "logs": "docker-compose -f docker-compose.dev.yml logs -f",
+    "logs-n8n": "docker-compose -f docker-compose.dev.yml logs -f n8n",
+    "logs-db": "docker-compose -f docker-compose.dev.yml logs -f postgres",
+    "backup": "bash scripts/backup.sh",
+    "deploy": "bash scripts/deploy.sh",
+    "test-scrapers": "cd custom-scripts && node test-all.js",
+    "test-db": "cd custom-scripts && node test-database.js",
+    "setup": "bash scripts/setup.sh",
+    "reset": "bash scripts/reset.sh",
+    "status": "docker-compose -f docker-compose.dev.yml ps"
+  },
+  "keywords": [
+    "e-commerce",
+    "product-scout",
+    "dropshipping",
+    "automation",
+    "n8n",
+    "hil",
+    "product-research"
+  ],
+  "author": "GenFlowAutomation",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "nodemon": "^3.0.0",
+    "typescript": "^5.0.0",
+    "prettier": "^3.0.0"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0",
+    "dotenv": "^16.3.0",
+    "pg": "^8.11.0",
+    "redis": "^4.6.0"
+  }
+}
