@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker-host.sock
+    command: sleep infinity
+    networks:
+      - product-scout-net
+
+  n8n:
+    image: n8nio/n8n:latest
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n
+      - DB_POSTGRESDB_USER=n8n
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD:-n8n_secure_password}
+      - N8N_HOST=${CODESPACE_NAME:-localhost}-5678.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-}
+      - N8N_PROTOCOL=${CODESPACES:-false} == "true" ? "https" : "http"
+      - N8N_PORT=5678
+      - WEBHOOK_URL=${CODESPACES:-false} == "true" ? "https://${CODESPACE_NAME}-5678.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/" : "http://localhost:5678/"
+      - GENERIC_TIMEZONE=Europe/Berlin
+      - N8N_METRICS=true
+      - N8N_LOG_LEVEL=info
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY:-very_secure_encryption_key_change_me}
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./custom-scripts:/home/node/custom-scripts
+      - ./n8n-workflows:/home/node/workflows
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - product-scout-net
+
+  postgres:
+    image: postgres:15
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=n8n
+      - POSTGRES_USER=n8n
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-n8n_secure_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/seed-data.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    networks:
+      - product-scout-net
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - product-scout-net
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL:-admin@productscout.local}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD:-admin123}
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - product-scout-net
+
+volumes:
+  n8n_data:
+  postgres_data:
+  redis_data:
+  pgadmin_data:
+
+networks:
+  product-scout-net:
+    driver: bridge
