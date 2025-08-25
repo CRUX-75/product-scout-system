@@ -4,42 +4,26 @@
   "private": true,
   "description": "E-commerce Product Scout with HIL Integration - MVP Lean",
   "main": "index.js",
-  "engines": {
-    "node": ">=18"
-  },
+  "engines": { "node": ">=18" },
   "scripts": {
-  "//---------------- Dev (local con Docker)": "",
-  "dev": "docker-compose -f docker-compose.dev.yml up -d",
-  "stop": "docker-compose -f docker-compose.dev.yml down",
-  "logs": "docker-compose -f docker-compose.dev.yml logs -f",
-  "logs-n8n": "docker-compose -f docker-compose.dev.yml logs -f n8n",
-  "logs-db": "docker-compose -f docker-compose.dev.yml logs -f postgres",
-  "backup": "bash scripts/backup.sh",
-  "deploy": "bash scripts/deploy.sh",
-  "setup": "bash scripts/setup.sh",
-  "reset": "bash scripts/reset.sh",
-  "status": "docker-compose -f docker-compose.dev.yml ps",
-
-  "//---------------- Producción (Railway)": "",
-  "build": "tsc -p . || echo \"No tsconfig.json, skipping TypeScript build\"",
-  "start": "node ./index.js",
-  "prestart": "npm run build",
-
-  "//---------------- Utilidades": "",
-  "lint": "prettier -c .",
-  "format": "prettier -w ."
-}
-
-
-    "//---------------- Tests utilitarios": ",
+    "//---------------- Dev (local con Docker)": "",
+    "dev": "docker-compose -f docker-compose.dev.yml up -d",
+    "stop": "docker-compose -f docker-compose.dev.yml down",
+    "logs": "docker-compose -f docker-compose.dev.yml logs -f",
+    "logs-n8n": "docker-compose -f docker-compose.dev.yml logs -f n8n",
+    "logs-db": "docker-compose -f docker-compose.dev.yml logs -f postgres",
+    "backup": "bash scripts/backup.sh",
+    "deploy": "bash scripts/deploy.sh",
+    "setup": "bash scripts/setup.sh",
+    "reset": "bash scripts/reset.sh",
+    "status": "docker-compose -f docker-compose.dev.yml ps",
+    "//---------------- Producción (Railway)": "",
+    "build": "tsc -p . || echo \"No tsconfig.json, skipping TypeScript build\"",
+    "start": "node ./index.js",
+    "prestart": "npm run build",
+    "//---------------- Tests utilitarios": "",
     "test-scrapers": "cd custom-scripts && node test-all.js",
     "test-db": "cd custom-scripts && node test-database.js",
-
-    "//---------------- Build/Start para producción (Railway)": "",
-    "build": "tsc -p . || echo \"No tsconfig.json, skipping TypeScript build\"",
-    "start": "node index.js",
-    "prestart": "npm run build",
-
     "//---------------- Estilo": "",
     "lint": "prettier -c .",
     "format": "prettier -w ."
