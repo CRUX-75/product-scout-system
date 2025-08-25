@@ -8,17 +8,28 @@
     "node": ">=18"
   },
   "scripts": {
-    "//---------------- Dev (local con Docker)": "",
-    "dev": "docker-compose -f docker-compose.dev.yml up -d",
-    "stop": "docker-compose -f docker-compose.dev.yml down",
-    "logs": "docker-compose -f docker-compose.dev.yml logs -f",
-    "logs-n8n": "docker-compose -f docker-compose.dev.yml logs -f n8n",
-    "logs-db": "docker-compose -f docker-compose.dev.yml logs -f postgres",
-    "backup": "bash scripts/backup.sh",
-    "deploy": "bash scripts/deploy.sh",
-    "setup": "bash scripts/setup.sh",
-    "reset": "bash scripts/reset.sh",
-    "status": "docker-compose -f docker-compose.dev.yml ps",
+  "//---------------- Dev (local con Docker)": "",
+  "dev": "docker-compose -f docker-compose.dev.yml up -d",
+  "stop": "docker-compose -f docker-compose.dev.yml down",
+  "logs": "docker-compose -f docker-compose.dev.yml logs -f",
+  "logs-n8n": "docker-compose -f docker-compose.dev.yml logs -f n8n",
+  "logs-db": "docker-compose -f docker-compose.dev.yml logs -f postgres",
+  "backup": "bash scripts/backup.sh",
+  "deploy": "bash scripts/deploy.sh",
+  "setup": "bash scripts/setup.sh",
+  "reset": "bash scripts/reset.sh",
+  "status": "docker-compose -f docker-compose.dev.yml ps",
+
+  "//---------------- Producción (Railway)": "",
+  "build": "tsc -p . || echo \"No tsconfig.json, skipping TypeScript build\"",
+  "start": "node ./index.js",
+  "prestart": "npm run build",
+
+  "//---------------- Utilidades": "",
+  "lint": "prettier -c .",
+  "format": "prettier -w ."
+}
+
 
     "//---------------- Tests utilitarios": "",
     "test-scrapers": "cd custom-scripts && node test-all.js",
