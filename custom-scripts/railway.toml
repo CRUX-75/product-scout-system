@@ -1,0 +1,21 @@
+[build]
+builder = "dockerfile"
+
+[deploy]
+startCommand = "docker-compose -f docker-compose.prod.yml up -d"
+restartPolicyType = "always"
+
+[environments.production]
+NODE_ENV = "production"
+
+[[services]]
+name = "product-scout-n8n"
+source = "."
+
+[[services]]
+name = "product-scout-postgres"
+source = "."
+
+[[services]]
+name = "product-scout-redis"  
+source = "."
