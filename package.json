@@ -31,7 +31,7 @@
 }
 
 
-    "//---------------- Tests utilitarios": "",
+    "//---------------- Tests utilitarios": ",
     "test-scrapers": "cd custom-scripts && node test-all.js",
     "test-db": "cd custom-scripts && node test-database.js",
 
